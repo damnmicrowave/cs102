@@ -12,6 +12,13 @@ def gcd(a: int, b: int) -> int:
                 return i
 
 
+def multiplicative_inverse(e: int, phi: int) -> int:
+    d = 1
+    while (e % phi) * d != 1:
+        d += 1
+    return d
+
+
 def generate_keypair(p: int, q: int) -> ((int, int), (int, int)):
     if not (is_prime(p) and is_prime(q)):
         raise ValueError('Both numbers must be prime.')
@@ -37,4 +44,4 @@ def generate_keypair(p: int, q: int) -> ((int, int), (int, int)):
     d = multiplicative_inverse(e, phi)
     # Return public and private keypair
     # Public key is (e, n) and private key is (d, n)
-    return ((e, n), (d, n))
+    return (e, n), (d, n)
