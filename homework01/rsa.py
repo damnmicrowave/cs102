@@ -6,17 +6,24 @@ def is_prime(n: int) -> bool:
 
 
 def gcd(a: int, b: int) -> int:
-    for i in range(a, 0, -1):
-        for j in range(b, i, -1):
-            if i == j:
-                return i
+    while a % b != 0:
+        a, b = b, a % b
+    return b
 
 
 def multiplicative_inverse(e: int, phi: int) -> int:
-    d = 1
-    while (e % phi) * d != 1:
-        d += 1
-    return d
+    div = []
+    rows = 0
+    phi_temp = phi
+    while phi_temp % e != 0:
+        div.append(phi_temp // e)
+        phi_temp, e = e, phi_temp % e
+        rows += 1
+    x = 0
+    y = 1
+    for i in range(rows - 1, -1, -1):
+        x, y = y, x - (y * div[i])
+    return y % phi
 
 
 def generate_keypair(p: int, q: int) -> ((int, int), (int, int)):
