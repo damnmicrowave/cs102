@@ -44,6 +44,11 @@ class GameOfLife:
         if self.max_generation is not None:
             return not self.is_max_generations_exceeded
 
+    def toggle_cell(self, pos):
+        x, y = pos
+        cell = self.field[x][y]
+        self.field[x][y] = 0 if cell else 1
+
     @property
     def is_max_generations_exceeded(self) -> bool:
         return self.curr_generation >= self.max_generation

@@ -65,16 +65,20 @@ class GUI(UI):
             for event in pygame.event.get():
                 if event.type == QUIT:
                     running = False
-                if event.key == pygame.K_SPACE:
-                    paused = True
+                if pygame.key.get_pressed()[K_SPACE]:
+                    paused = not paused
+                if event.type == pygame.MOUSEBUTTONUP:
+                    x, y = pygame.mouse.get_pos()
+                    self.life.toggle_cell((x // self.cell_size, y // self.cell_size))
             self.draw_lines()
             pygame.display.flip()
-            running = self.life.step()
+            if not paused:
+                running = self.life.step()
             self.draw_grid()
             clock.tick(self.speed)
         pygame.quit()
 
 
 if __name__ == '__main__':
-    game = GUI(max_generation=10)
+    game = GUI(max_generation = 100)
     game.run()
