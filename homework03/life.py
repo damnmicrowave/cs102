@@ -1,12 +1,10 @@
-import pygame
-from pygame.locals import *
+import json
 from random import randint
-from pprint import pprint
 
 
 class GameOfLife:
 
-    def __init__(self, cell_width, cell_height, max_generation = None) -> None:
+    def __init__(self, cell_width=64, cell_height=48, max_generation=None) -> None:
         self.field = None
         self.prev_field = None
         self.cell_width = cell_width
@@ -37,12 +35,13 @@ class GameOfLife:
                 new_field[x].append(new_cell)
         return new_field
 
-    def step(self) -> None:
+    def step(self) -> bool:
         self.prev_field = self.field
         self.field = self.get_next_generation()
         self.curr_generation += 1
         if self.max_generation is not None:
             return not self.is_max_generations_exceeded
+        return self.is_changing
 
     def toggle_cell(self, pos):
         x, y = pos
@@ -55,18 +54,14 @@ class GameOfLife:
 
     @property
     def is_changing(self) -> bool:
-        return self.field == self.prev_field
+        return self.field != self.prev_field
 
-    def from_file(self, filename):
-        field = list()
-        with open(filename, 'r') as file:
-            for data in file.read().split('\n'):
-                field.append(list(map(int, data)))
-        self.field = field
+    def from_file(self, filename, name) -> None:
+        with open(filename) as file:
+            self.field = json.load(file)[name]
 
-    def save(self, filename) -> None:
-        with open(filename, 'w') as file:
-        	data = ''
-        	for col in self.field:
-        		data += '{}\n'.format(''.join(map(str, col)))
-        	file.write(data)
+    def save(self, filename, name) -> None:
+        with open(filename, 'w+') as file:
+            saved_data = json.load(file) if file.read() != '' else {}
+            saved_data[name] = self.field
+            json.dump(saved_data, file)
