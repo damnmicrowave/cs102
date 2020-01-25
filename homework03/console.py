@@ -29,5 +29,5 @@ class Console(UI):
 
 
 if __name__ == '__main__':
-    game = Console(GameOfLife(64, 48))
+    game = Console(GameOfLife((64, 48)))
     game.run()

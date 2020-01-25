@@ -1,16 +1,16 @@
 import json
+from copy import copy
 from random import randint
 
 
 class GameOfLife:
 
-    def __init__(self, cell_width=64, cell_height=48, max_generation=None) -> None:
+    def __init__(self, size=(64, 48), max_generation=None) -> None:
         self.field = None
         self.prev_field = None
-        self.cell_width = cell_width
-        self.cell_height = cell_height
+        self.cell_width, self.cell_height = size
         self.max_generation = max_generation
-        self.curr_generation = 0
+        self.curr_generation = 1
         self.field = self.create_grid(randomize=True)
 
     def create_grid(self, randomize: bool = False):
@@ -36,7 +36,7 @@ class GameOfLife:
         return new_field
 
     def step(self) -> bool:
-        self.prev_field = self.field
+        self.prev_field = copy(self.field)
         self.field = self.get_next_generation()
         self.curr_generation += 1
         if self.max_generation is not None:
