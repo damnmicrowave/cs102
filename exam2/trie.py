@@ -60,4 +60,4 @@ def autocorrect(trie: dict, word: str) -> List[str]:
 if __name__ == '__main__':
     my_trie = build_trie()
     print(autocomplete(my_trie, 'ha', 10))
-    print(autocorrect(build_trie(), 'hag'))
+    print(autocorrect(my_trie, 'hag'))
